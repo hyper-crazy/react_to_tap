@@ -1,20 +1,16 @@
-name: Build & Release Flutter APK & Windows EXE
+name: Build APK and EXE
 
 on:
   push:
-    tags:
-      - "v*" # Trigger only on tags like v1.0.0
-  workflow_dispatch: # Allow manual trigger
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build-android:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.0"
 
@@ -24,39 +20,31 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Upload APK to GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
         with:
-          files: build/app/outputs/flutter-apk/app-release.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: react_to_tap-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.0"
 
-      - name: Enable Windows Desktop
+      - name: Enable Windows
         run: flutter config --enable-windows-desktop
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build Windows EXE
+      - name: Build EXE
         run: flutter build windows --release
 
-      - name: Zip Windows build
-        run: Compress-Archive -Path build/windows/runner/Release/* -DestinationPath react_to_tap-windows.zip
-
-      - name: Upload Windows ZIP to GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload EXE
+        uses: actions/upload-artifact@v3
         with:
-          files: react_to_tap-windows.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: react_to_tap-exe
+          path: build/windows/runner/Release/react_to_tap.exe
