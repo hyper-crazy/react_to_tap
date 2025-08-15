@@ -41,7 +41,7 @@ android {
     android.applicationVariants.all {
         outputs.all {
             val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            outputImpl.outputFileName = "react_to_tap.apk"
+            outputImpl.outputFileName = "React To Tap.apk"
         }
     }
 }

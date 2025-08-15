@@ -25,7 +25,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
   // --- Target State ---
   bool targetVisible = false;
   Offset targetPos = Offset.zero;
-  double targetSize = 60;
+  double targetSize = 50;
   int spawnTime = 0;
   Timer? targetTimer;
   Timer? delayTimer;
@@ -48,15 +48,15 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
 
   // --- Mode timing (ms) based on human reaction references ---
   final Map<SpeedMode, List<int>> targetDurations = {
-    SpeedMode.Normal: [800, 900, 1000],
-    SpeedMode.Fast: [500, 600, 700],
-    SpeedMode.Lightning: [350, 400, 450], // slightly longer for tappable
+    SpeedMode.Normal: [500, 500, 500],
+    SpeedMode.Fast: [450, 450, 450],
+    SpeedMode.Lightning: [350, 350, 350], // slightly longer for tappable
   };
 
   final Map<SpeedMode, int> delayBetweenTargets = {
-    SpeedMode.Normal: 200,
-    SpeedMode.Fast: 150,
-    SpeedMode.Lightning: 100,
+    SpeedMode.Normal: 300,
+    SpeedMode.Fast: 200,
+    SpeedMode.Lightning: 200,
   };
 
   @override
@@ -64,7 +64,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
     super.initState();
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 150),
     );
     _scaleAnim = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
@@ -128,7 +128,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
 
     // Random target size
     double minSize = 50;
-    double maxSize = 90;
+    double maxSize = 75;
     double size = minSize + rng.nextDouble() * (maxSize - minSize);
 
     double margin = 10;
@@ -191,9 +191,9 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
               color: Colors.white,
               fontWeight: FontWeight.bold,
             )),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         Wrap(
-          spacing: 8,
+          spacing: 10,
           children: SpeedMode.values.map((mode) {
             return ChoiceChip(
               label: Text(mode.name),
@@ -227,7 +227,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
             );
           }).toList(),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 15),
         FilledButton(
           onPressed: running ? null : startGame,
           child: Text(running ? 'Running...' : 'Start Game'),
