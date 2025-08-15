@@ -44,7 +44,6 @@ android {
             outputImpl.outputFileName = "react_to_tap.apk"
         }
     }
-
 }
 
 flutter {
