@@ -64,7 +64,7 @@ class _GamePageState extends State<GamePage> with SingleTickerProviderStateMixin
     super.initState();
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 250),
     );
     _scaleAnim = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
